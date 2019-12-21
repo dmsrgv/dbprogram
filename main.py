@@ -181,6 +181,8 @@ class Window_clients(QMainWindow):
         self.ui.comboBox.activated.connect(self.onActivation)
         self.ui.comboBox_2.activated.connect(self.check_id_payments)
         self.ui.pushButton_2.clicked.connect(self.zakazat)
+        self.ui.plainTextEdit_2.setPlainText("")
+        self.ui.plainTextEdit_2.setPlaceholderText("Введите ваш комментарий...")
         rest = self.ui.comboBox
         type_payments = self.ui.comboBox_2
         con = Window1().connect_bd()
@@ -222,6 +224,13 @@ class Window_clients(QMainWindow):
         id_status = 3
         id_discount = self.check_id_discount()
         id_client = self.client_create()
+        prize = self.choose_dishes()
+        self.ui.plainTextEdit.setPlainText("Номер вашего заказа: " + str(id_order))
+        self.ui.plainTextEdit.appendPlainText("Время заказа:   " + str(ordered_in))
+        self.ui.plainTextEdit.appendPlainText("Время доставки: " + str(deliver_in))
+        prize = prize.replace("?", "рублей")
+        self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(prize))
+
        # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
             "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -235,6 +244,23 @@ class Window_clients(QMainWindow):
     # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
 
     # Создаем клиента
+    
+
+    def choose_dishes(self):
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            id_restik = int((self.ui.comboBox.currentIndex() + 1))
+            name_dishes = self.ui.tableWidget.currentItem().text()
+            cur.execute("select prize_dish from dishes where id_restaurant = %s and name_dish = %s", (id_restik, name_dishes))
+            prize = cur.fetchone()[0]
+
+            con.commit()
+            con.close()
+            return prize
+
+        except psycopg2.DatabaseError:
+            print("Ошибка")
 
     def client_create(self):
         try:

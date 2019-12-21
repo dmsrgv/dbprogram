@@ -130,11 +130,6 @@ class Ui_Clients(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
-        self.lineEdit_5 = QtWidgets.QLineEdit(Clients)
-        self.lineEdit_5.setGeometry(QtCore.QRect(10, 380, 231, 20))
-        self.lineEdit_5.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
-"             font: bold;            }")
-        self.lineEdit_5.setObjectName("lineEdit_5")
 
         self.retranslateUi(Clients)
         QtCore.QMetaObject.connectSlotsByName(Clients)
@@ -144,7 +139,7 @@ class Ui_Clients(object):
         Clients.setWindowTitle(_translate("Clients", "Form"))
         self.label_2.setText(_translate("Clients", "Ваша роль:"))
         self.label_3.setText(_translate("Clients", "Выберите ресторан:"))
-        self.label_4.setText(_translate("Clients", "Меню:"))
+        self.label_4.setText(_translate("Clients", "Выберите блюдо:"))
         self.pushButton_2.setText(_translate("Clients", "Заказать"))
         self.plainTextEdit.setPlainText(_translate("Clients", "Информация"))
         self.label.setText(_translate("Clients", "clients"))
@@ -154,4 +149,3 @@ class Ui_Clients(object):
         self.label_7.setText(_translate("Clients", "Адрес:"))
         self.label_8.setText(_translate("Clients", "Промокод скидки:"))
         self.label_9.setText(_translate("Clients", "Телефон:"))
-        self.lineEdit_5.setPlaceholderText(_translate("Clients", "Введите название блюда..."))

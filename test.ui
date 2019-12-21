@@ -88,7 +88,7 @@
 			 font: bold;			}</string>
    </property>
    <property name="text">
-    <string>Меню:</string>
+    <string>Выберите блюдо:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
@@ -340,23 +340,6 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="styleSheet">
     <string notr="true">QTableWidget {color: rgb(85, 255, 0);
 			 font: bold;			}</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>380</y>
-     <width>231</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
-			 font: bold;			}</string>
-   </property>
-   <property name="placeholderText">
-    <string>Введите название блюда...</string>
    </property>
   </widget>
  </widget>
