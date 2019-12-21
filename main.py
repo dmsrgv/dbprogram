@@ -1,4 +1,5 @@
 # Библиотеки
+from datetime import datetime, timedelta
 import sys
 import psycopg2
 # Импортируем наш интерфейс
@@ -208,6 +209,10 @@ class Window_clients(QMainWindow):
             # Обработка кнопки "Заказать". Добавление заказа
 
     def zakazat(self):
+        now = datetime.now()
+        ordered_in = now.strftime("%H:%M:%S")
+        after = now + timedelta(minutes=45)
+        deliver_in = after.strftime("%H:%M:%S")
         con = Window1().connect_bd()
         cur = con.cursor()
         cur.execute("select count(id_order) from orders")
@@ -217,10 +222,10 @@ class Window_clients(QMainWindow):
         id_status = 3
         id_discount = self.check_id_discount()
         id_client = self.client_create()
-        print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
+       # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
-            "INSERT INTO orders (id_order,id_type_payments,id_status,id_restaurant, id_client, id_discount) VALUES (%s, %s, %s, %s, %s, %s)",
-            (id_order, id_type_payments, id_status, id_restaurant, id_client, id_discount))
+            "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in))
         con.commit()
 
         # rezz = self.poluchim_x()
@@ -273,7 +278,6 @@ class Window_clients(QMainWindow):
             promokod = self.ui.lineEdit_3.text()
             cur.execute("SELECT id_discount FROM system_discount WHERE promokod = %s", (promokod,))
             id_discount = cur.fetchone()[0]
-            print(id_discount)
             return id_discount
 
     # Выводим список блюд в зависимости от выбора ресторана
