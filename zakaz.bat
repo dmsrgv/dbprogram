@@ -1,0 +1,1 @@
+pyuic5 zakaz.ui -o zakaz.py
