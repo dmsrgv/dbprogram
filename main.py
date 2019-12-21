@@ -207,7 +207,6 @@ class Window_clients(QMainWindow):
 
             # Обработка кнопки "Заказать". Добавление заказа
 
-
     def zakazat(self):
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -219,7 +218,9 @@ class Window_clients(QMainWindow):
         id_discount = self.check_id_discount()
         id_client = self.client_create()
         print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
-        cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,id_restaurant, id_client, id_discount) VALUES (%s, %s, %s, %s, %s, %s)", (id_order, id_type_payments, id_status, id_restaurant, id_client, id_discount))
+        cur.execute(
+            "INSERT INTO orders (id_order,id_type_payments,id_status,id_restaurant, id_client, id_discount) VALUES (%s, %s, %s, %s, %s, %s)",
+            (id_order, id_type_payments, id_status, id_restaurant, id_client, id_discount))
         con.commit()
 
         # rezz = self.poluchim_x()
@@ -263,18 +264,17 @@ class Window_clients(QMainWindow):
 
     # Проверяем id скидки
     def check_id_discount(self):
-        try:
-            if self.ui.lineEdit_3.text() == "":
-                id_discount = 1
-            else:
-                con = Window1().connect_bd()
-                cur = con.cursor()
-                cur.execute("SELECT id_discount FROM system_discount WHERE promokod = " + self.ui.lineEdit_3.text())
-                id_discount = cur.fetchone()[0]
-
+        if self.ui.lineEdit_3.text() == "":
+            id_discount = 1
             return id_discount
-        except psycopg2.DatabaseError:
-            self.ui.lineEdit_2.setPlaceholderText("ПРОМОКОД НЕ НАЙДЕН!")
+        else:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            promokod = self.ui.lineEdit_3.text()
+            cur.execute("SELECT id_discount FROM system_discount WHERE promokod = %s", (promokod,))
+            id_discount = cur.fetchone()[0]
+            print(id_discount)
+            return id_discount
 
     # Выводим список блюд в зависимости от выбора ресторана
 
