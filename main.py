@@ -205,7 +205,8 @@ class Window_clients(QMainWindow):
         except psycopg2.DatabaseError:
             print("Ошибка")
 
-            # Обработка кнопки "Заказать"
+            # Обработка кнопки "Заказать". Добавление заказа
+
 
     def zakazat(self):
         con = Window1().connect_bd()
@@ -213,16 +214,67 @@ class Window_clients(QMainWindow):
         cur.execute("select count(id_order) from orders")
         id_order = cur.fetchone()[0] + 1
         id_type_payments = self.check_id_payments()
-        print(id_order)
-        print(id_type_payments)
+        id_restaurant = self.check_id_restaurant()
+        id_status = 3
+        id_discount = self.check_id_discount()
+        id_client = self.client_create()
+        print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
+        cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,id_restaurant, id_client, id_discount) VALUES (%s, %s, %s, %s, %s, %s)", (id_order, id_type_payments, id_status, id_restaurant, id_client, id_discount))
+        con.commit()
 
-        # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
+        # rezz = self.poluchim_x()
+
+    ## print(rezz)
+    # print(id_order)
+    # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
+
+    # Создаем клиента
+
+    def client_create(self):
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            cur.execute("SELECT COUNT(id_client) from clients")
+            id_client = cur.fetchone()[0] + 1
+            name_client = self.ui.lineEdit.text()
+            address_client = self.ui.lineEdit_2.text()
+            comment_client = self.ui.plainTextEdit_2.toPlainText()
+            phone_client = self.ui.lineEdit_4.text()
+            cur.execute(
+                "INSERT INTO clients (id_client, name_client, address_client, comment_client, phone_client) VALUES (%s, %s, %s, %s, %s)",
+                (id_client, name_client, address_client, comment_client, phone_client))
+            con.commit()
+            con.close()
+            return id_client
+
+        except psycopg2.DatabaseError as e:
+            print(f'Error {e}')
+            sys.exit(1)
 
     # Проверяем id оплаты по выбору в комбобоксе
-    def check_id_payments(self, index):
-        col = index + 1
-        print(col)
-        return col
+    def check_id_payments(self):
+        index = self.ui.comboBox_2.currentIndex()
+        return index + 1
+
+    # Проверяем id ресторана
+    def check_id_restaurant(self):
+        index = self.ui.comboBox.currentIndex()
+        return index + 1
+
+    # Проверяем id скидки
+    def check_id_discount(self):
+        try:
+            if self.ui.lineEdit_3.text() == "":
+                id_discount = 1
+            else:
+                con = Window1().connect_bd()
+                cur = con.cursor()
+                cur.execute("SELECT id_discount FROM system_discount WHERE promokod = " + self.ui.lineEdit_3.text())
+                id_discount = cur.fetchone()[0]
+
+            return id_discount
+        except psycopg2.DatabaseError:
+            self.ui.lineEdit_2.setPlaceholderText("ПРОМОКОД НЕ НАЙДЕН!")
 
     # Выводим список блюд в зависимости от выбора ресторана
 
@@ -230,7 +282,6 @@ class Window_clients(QMainWindow):
         con = Window1().connect_bd()
         cur = con.cursor()
         col = index + 1
-        print(col)
         try:
             cur.execute("SELECT name_dish FROM dishes WHERE id_restaurant =" + str(col) + "")
             result = cur.fetchall()
@@ -356,6 +407,7 @@ class Window_supervisors(QMainWindow):
         self.ui = Ui_Supervisors()
         self.ui.setupUi(self)
         self.setWindowTitle('Supervisors Form')
+
 
 # Окно для логистов (в разработке)
 
