@@ -436,7 +436,7 @@ class Zakaz(QMainWindow):
                 con.close()
 
 
-# Окно для админов (в разработке)
+# Окно для админов
 
 class Window_admins(QMainWindow):
     def __init__(self):
@@ -444,10 +444,75 @@ class Window_admins(QMainWindow):
         self.ui = Ui_Admins()
         self.ui.setupUi(self)
         self.setWindowTitle('Admins Form')
+        self.ui.pushButton_3.clicked.connect(self.sql_query)
+        self.ui.pushButton_2.clicked.connect(self.user_role)
+        self.ui.pushButton_4.clicked.connect(self.user_info)
+        users = self.ui.comboBox
+        roles = self.ui.comboBox_2
+        roles.addItems(["clients", "admins", "supervisors", "couriers", "logists"])
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("Select count(grantee) from information_schema.applicable_roles")
+        result = cur.fetchone()
+        col = int(result[0])
+        con.commit()
+        try:
+            for i in range(3, col):
+                cur = con.cursor()
+                cur.execute("select grantee from information_schema.applicable_roles")
+                result = cur.fetchall()[i]
+                users.addItems(result)
+        except psycopg2.DatabaseError:
+            print("Ошибка")
+
+    def user_role(self):
+        next_role = self.ui.comboBox_2.currentText()
+        self.ui.plainTextEdit_2.setPlainText("")
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            grantee = self.ui.comboBox.currentText()
+            cur.execute(
+                "select role_name from information_schema.applicable_roles where grantee =" + "'" + grantee + "'")
+            last_role = cur.fetchone()[0]
+            cur.execute("REVOKE " + last_role + " FROM " + grantee + ";")
+            con.commit()
+            cur.execute("GRANT " + next_role + " TO " + grantee + ";")
+            con.commit()
+            self.ui.label_5.setText("Выполнено: " + str(last_role) + " ->" + str(next_role))
+        except psycopg2.DatabaseError:
+            print("Ошибка")
+        # cur.execute("GRANT %s TO %s", (next_role, grantee))
+
+    # con.commit()
+
+    def user_info(self):
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            grantee = self.ui.comboBox.currentText()
+            cur.execute(
+                "select role_name from information_schema.applicable_roles where grantee =" + "'" + grantee + "'")
+            last_role = cur.fetchone()[0]
+            self.ui.plainTextEdit_2.setPlainText("")
+            self.ui.plainTextEdit_2.appendPlainText("Роль " + grantee + " = " + last_role)
+        except psycopg2.DatabaseError:
+            self.ui.plainTextEdit_2.appendPlainText("У " + grantee + "нет роли")
+
+    def sql_query(self):
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            cur.execute(self.ui.plainTextEdit.toPlainText())
+            con.commit()
+            con.close()
+            self.ui.label_7.setText("Запрос выполнен.")
+        except psycopg2.DatabaseError:
+            print("Ошибка")
+            self.ui.label_7.setText("Ошибка. Запрос не выполнен.")
 
 
-# Окно для супервайзеров ( в разработке)
-
+# Окно для супервайзеров
 class Window_supervisors(QMainWindow):
     def __init__(self):
         super(Window_supervisors, self).__init__()
@@ -488,7 +553,6 @@ class Window_supervisors(QMainWindow):
             result = cur.fetchone()
             type.addItems(result)
 
-
     def info_courier(self):
         name_courier = self.ui.comboBox.currentText()
         con = Window1().connect_bd()
@@ -511,9 +575,6 @@ class Window_supervisors(QMainWindow):
         self.ui.plainTextEdit.appendPlainText("Дата активации:       " + str(date_activation))
         self.ui.plainTextEdit.appendPlainText("-------------------------------------")
 
-
-
-
     def add_courier(self):
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -533,11 +594,13 @@ class Window_supervisors(QMainWindow):
         cur.execute(
             "INSERT INTO couriers (id_courier, id_courier_service, id_type_courier, id_status_courier, surname, name, second_name, phone, birthday, date_activation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (
-            id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr, date_activation))
+                id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr,
+                date_activation))
         con.commit()
         con.close()
-# Окно для логистов (в разработке)
 
+
+# Окно для логистов
 class Window_logists(QMainWindow):
     def __init__(self):
         super(Window_logists, self).__init__()
