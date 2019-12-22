@@ -212,7 +212,6 @@ class Window_clients(QMainWindow):
         except psycopg2.DatabaseError:
             print("Ошибка")
 
-
     def click_table(self):
         row = self.ui.tableWidget.currentRow()
         col = 0
@@ -224,19 +223,17 @@ class Window_clients(QMainWindow):
         cur.execute("select prize_dish from dishes where id_restaurant = %s and name_dish = %s",
                     (id_restik, value))
         prize = cur.fetchone()[0]
-        #sum_prize = sum_prize + prize
+        # sum_prize = sum_prize + prize
         prize = prize.replace(" ?", "")
-        prize = prize.replace(",",".")
+        prize = prize.replace(",", ".")
         self.sum_prize += float(prize)
         return self.sum_prize
-
 
     def clear_dishes(self):
         self.ui.plainTextEdit_3.setPlainText("")
         self.sum_prize = 0
 
-
-            # Обработка кнопки "Заказать". Добавление заказа
+        # Обработка кнопки "Заказать". Добавление заказа
 
     def zakazat(self):
         now = datetime.now()
@@ -254,7 +251,7 @@ class Window_clients(QMainWindow):
         id_client = self.client_create()
         discount_percent = self.discount_percent()
         sum_prize = self.sum_prize
-        sum_prize = sum_prize*(1-discount_percent/100)
+        sum_prize = sum_prize * (1 - discount_percent / 100)
         self.ui.plainTextEdit.setPlainText("Номер вашего заказа: " + str(id_order))
         self.ui.plainTextEdit.appendPlainText("Время заказа:   " + str(ordered_in))
         self.ui.plainTextEdit.appendPlainText("Время доставки: " + str(deliver_in))
@@ -280,7 +277,6 @@ class Window_clients(QMainWindow):
         cur.execute("select percent_discount from system_discount where id_discount = %s", (id_discount,))
         percent_discount = cur.fetchone()[0]
         return percent_discount
-
 
     # Создаем клиента
     def client_create(self):
@@ -458,7 +454,60 @@ class Window_supervisors(QMainWindow):
         self.ui = Ui_Supervisors()
         self.ui.setupUi(self)
         self.setWindowTitle('Supervisors Form')
+        self.ui.pushButton_3.clicked.connect(self.add_courier)
+        couriers = self.ui.comboBox
+        service = self.ui.comboBox_2
+        type = self.ui.comboBox_3
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        # Все курьеры
+        cur.execute("SELECT COUNT(ID_courier) from couriers")
+        result = cur.fetchone()
+        col = int(result[0]) + 1
+        con.commit()
+        for i in range(1, col):
+            cur = con.cursor()
+            cur.execute("select surname from couriers where id_courier =" + str(i) + "")
+            result = cur.fetchone()
+            couriers.addItems(result)
+        # Курьерская служба
+        cur.execute("SELECT COUNT(id_courier_service) from courier_service")
+        result = cur.fetchone()
+        col = int(result[0]) + 1
+        con.commit()
+        for i in range(1, col):
+            cur = con.cursor()
+            cur.execute("select name_courier_service from courier_service where id_courier_service =" + str(i) + "")
+            result = cur.fetchone()
+            service.addItems(result)
+        # Тип курьера
+        for i in range(1, 4):
+            cur = con.cursor()
+            cur.execute("select name_type from type_courier where id_type =" + str(i) + "")
+            result = cur.fetchone()
+            type.addItems(result)
 
+    def add_courier(self):
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT COUNT(ID_courier) from couriers")
+        result = cur.fetchone()
+        id_courier = int(result[0]) + 1
+        id_status_courier = 1
+        id_type = self.ui.comboBox_3.currentIndex() + 1
+        id_service = self.ui.comboBox_2.currentIndex() + 1
+        name = self.ui.lineEdit_2.text()
+        surname = self.ui.lineEdit_3.text()
+        second_name = self.ui.lineEdit_4.text()
+        phone = self.ui.lineEdit_5.text()
+        dr = self.ui.lineEdit_6.text()
+        now = datetime.now()
+        date_activation = now.strftime("%Y-%m-%d")
+        cur.execute(
+            "INSERT INTO couriers (id_courier, id_courier_service, id_type_courier, id_status_courier, surname, name, second_name, phone, birthday, date_activation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (
+            id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr, date_activation))
+        con.commit()
 
 # Окно для логистов (в разработке)
 
@@ -492,7 +541,6 @@ class Window_logists(QMainWindow):
         con.commit()
         con.close()
 
-
     def courier_order(self):
         now = datetime.now()
         date_delivery = now.strftime("%Y-%m-%d")
@@ -506,7 +554,9 @@ class Window_logists(QMainWindow):
         print(courier, order, id_delivery, id_client, date_delivery)
         con = Window1().connect_bd()
         cur = con.cursor()
-        cur.execute("INSERT INTO deliveries (id_delivery, id_courier, id_client, date_delivery, id_order) VALUES (%s, %s, %s, %s, %s)", (id_delivery, courier, id_client, date_delivery, order))
+        cur.execute(
+            "INSERT INTO deliveries (id_delivery, id_courier, id_client, date_delivery, id_order) VALUES (%s, %s, %s, %s, %s)",
+            (id_delivery, courier, id_client, date_delivery, order))
         con.commit()
         cur.execute("UPDATE orders set id_status=4 where id_order= %s", (order,))
         con.commit()
@@ -521,13 +571,13 @@ class Window_logists(QMainWindow):
         id_client = cur.fetchone()[0]
         return id_client
 
-
     def id_delivery(self):
         con = Window1().connect_bd()
         cur = con.cursor()
         cur.execute("select count(id_delivery) from deliveries")
         id_delivery = cur.fetchone()[0] + 1
         return id_delivery
+
 
 # Всегда нужна. Не дает окну закрыться при запуске
 

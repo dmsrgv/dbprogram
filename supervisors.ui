@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>402</height>
+    <width>614</width>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>20</y>
      <width>151</width>
      <height>31</height>
@@ -46,7 +46,7 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>120</y>
      <width>231</width>
      <height>22</height>
@@ -60,7 +60,7 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>40</x>
      <y>80</y>
      <width>161</width>
      <height>16</height>
@@ -77,7 +77,7 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>40</x>
      <y>170</y>
      <width>182</width>
      <height>23</height>
@@ -101,10 +101,10 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
   <widget class="QPlainTextEdit" name="plainTextEdit">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>290</y>
+     <x>30</x>
+     <y>220</y>
      <width>231</width>
-     <height>51</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -121,7 +121,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>180</x>
      <y>20</y>
      <width>161</width>
      <height>31</height>
@@ -139,8 +139,8 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>120</y>
+     <x>360</x>
+     <y>360</y>
      <width>182</width>
      <height>31</height>
     </rect>
@@ -160,6 +160,266 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
     <string>Добавить курьера</string>
    </property>
   </widget>
+  <widget class="QComboBox" name="comboBox_2">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>110</y>
+     <width>231</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>61</y>
+     <width>261</width>
+     <height>351</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>261</width>
+     <height>281</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>80</y>
+     <width>161</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Курьерская служба:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>140</y>
+     <width>161</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Тип курьера:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_3">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>170</y>
+     <width>231</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>200</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_3">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>230</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_4">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>260</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_5">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>290</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_6">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>320</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>200</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Имя:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>230</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Фамилия:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>260</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Отчество:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>290</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>Телефон:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>320</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 font: bold;			}</string>
+   </property>
+   <property name="text">
+    <string>День рождения:</string>
+   </property>
+  </widget>
+  <zorder>graphicsView_2</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>label_2</zorder>
+  <zorder>comboBox</zorder>
+  <zorder>label_3</zorder>
+  <zorder>pushButton_2</zorder>
+  <zorder>plainTextEdit</zorder>
+  <zorder>label</zorder>
+  <zorder>pushButton_3</zorder>
+  <zorder>comboBox_2</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_5</zorder>
+  <zorder>comboBox_3</zorder>
+  <zorder>lineEdit_2</zorder>
+  <zorder>lineEdit_3</zorder>
+  <zorder>lineEdit_4</zorder>
+  <zorder>lineEdit_5</zorder>
+  <zorder>lineEdit_6</zorder>
+  <zorder>label_6</zorder>
+  <zorder>label_7</zorder>
+  <zorder>label_8</zorder>
+  <zorder>label_9</zorder>
+  <zorder>label_10</zorder>
  </widget>
  <resources/>
  <connections/>
