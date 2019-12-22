@@ -458,6 +458,8 @@ class Window_logists(QMainWindow):
         self.ui = Ui_Logists()
         self.ui.setupUi(self)
         self.setWindowTitle('Logists Form')
+        self.ui.pushButton_2.clicked.connect(self.courier_order)
+        self.ui.plainTextEdit.setPlainText("")
         couriers = self.ui.comboBox
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -471,18 +473,51 @@ class Window_logists(QMainWindow):
             result = cur.fetchone()
             couriers.addItems(result)
 
-        cur.execute("select id_order from orders where id_status = 3")
-        rez = cur.fetchone()
-        print(rez)
-        #self.ui.comboBox_2.addItem([])
-
-
-
-
+        cur.execute("select count(id_order) from orders where id_status = 3")
+        col = cur.fetchone()[0]
+        for i in range(0, col):
+            cur.execute("select id_order from orders where id_status = 3")
+            rez = cur.fetchall()[i]
+            self.ui.comboBox_2.addItem(str(*rez))
         con.commit()
         con.close()
 
 
+    def courier_order(self):
+        now = datetime.now()
+        date_delivery = now.strftime("%Y-%m-%d")
+        courier = self.ui.comboBox.currentIndex() + 1
+        courier_name = self.ui.comboBox.currentText()
+        order = self.ui.comboBox_2.currentText()
+        remove_order = self.ui.comboBox_2.currentIndex()
+        id_delivery = self.id_delivery()
+        id_client = self.put_id_client()
+        self.ui.plainTextEdit.appendPlainText("Курьер " + courier_name + " назначен на заказ: " + order)
+        print(courier, order, id_delivery, id_client, date_delivery)
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("INSERT INTO deliveries (id_delivery, id_courier, id_client, date_delivery, id_order) VALUES (%s, %s, %s, %s, %s)", (id_delivery, courier, id_client, date_delivery, order))
+        con.commit()
+        cur.execute("UPDATE orders set id_status=4 where id_order= %s", (order,))
+        con.commit()
+        con.close()
+        self.ui.comboBox_2.removeItem(remove_order)
+
+    def put_id_client(self):
+        id_order = self.ui.comboBox_2.currentText()
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("select id_client from orders where id_order =" + id_order)
+        id_client = cur.fetchone()[0]
+        return id_client
+
+
+    def id_delivery(self):
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("select count(id_delivery) from deliveries")
+        id_delivery = cur.fetchone()[0] + 1
+        return id_delivery
 
 # Всегда нужна. Не дает окну закрыться при запуске
 

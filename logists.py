@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Logists(object):
     def setupUi(self, Logists):
         Logists.setObjectName("Logists")
-        Logists.resize(519, 402)
+        Logists.resize(519, 379)
         Logists.setStyleSheet("background: rgb(24, 24, 24)")
         self.label_2 = QtWidgets.QLabel(Logists)
         self.label_2.setGeometry(QtCore.QRect(10, 20, 151, 31))
@@ -39,7 +39,7 @@ class Ui_Logists(object):
 "             font: bold;            }")
         self.label_3.setObjectName("label_3")
         self.pushButton_2 = QtWidgets.QPushButton(Logists)
-        self.pushButton_2.setGeometry(QtCore.QRect(160, 200, 182, 23))
+        self.pushButton_2.setGeometry(QtCore.QRect(160, 180, 182, 23))
         self.pushButton_2.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
 "     border-style: outset;\n"
 "     border-radius: 10px;\n"
@@ -51,7 +51,7 @@ class Ui_Logists(object):
 "QPushButton::pressed{background-color: rgb(181, 181, 0)}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Logists)
-        self.plainTextEdit.setGeometry(QtCore.QRect(140, 260, 231, 111))
+        self.plainTextEdit.setGeometry(QtCore.QRect(30, 240, 461, 111))
         self.plainTextEdit.setStyleSheet("QPlainTextEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.plainTextEdit.setReadOnly(True)
