@@ -178,11 +178,15 @@ class Window_clients(QMainWindow):
         self.ui = Ui_Clients()
         self.ui.setupUi(self)
         self.setWindowTitle('Client Form')
+        self.sum_prize = 0
         self.ui.comboBox.activated.connect(self.onActivation)
         self.ui.comboBox_2.activated.connect(self.check_id_payments)
         self.ui.pushButton_2.clicked.connect(self.zakazat)
         self.ui.plainTextEdit_2.setPlainText("")
+        self.ui.plainTextEdit_3.setPlainText("")
         self.ui.plainTextEdit_2.setPlaceholderText("Введите ваш комментарий...")
+        self.ui.tableWidget.clicked.connect(self.click_table)
+        self.ui.pushButton_3.clicked.connect(self.clear_dishes)
         rest = self.ui.comboBox
         type_payments = self.ui.comboBox_2
         con = Window1().connect_bd()
@@ -208,6 +212,30 @@ class Window_clients(QMainWindow):
         except psycopg2.DatabaseError:
             print("Ошибка")
 
+
+    def click_table(self):
+        row = self.ui.tableWidget.currentRow()
+        col = 0
+        value = self.ui.tableWidget.item(row, col).text()
+        id_restik = int((self.ui.comboBox.currentIndex() + 1))
+        self.ui.plainTextEdit_3.appendPlainText(str(value))
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("select prize_dish from dishes where id_restaurant = %s and name_dish = %s",
+                    (id_restik, value))
+        prize = cur.fetchone()[0]
+        #sum_prize = sum_prize + prize
+        prize = prize.replace(" ?", "")
+        prize = prize.replace(",",".")
+        self.sum_prize += float(prize)
+        return self.sum_prize
+
+
+    def clear_dishes(self):
+        self.ui.plainTextEdit_3.setPlainText("")
+        self.sum_prize = 0
+
+
             # Обработка кнопки "Заказать". Добавление заказа
 
     def zakazat(self):
@@ -224,14 +252,12 @@ class Window_clients(QMainWindow):
         id_status = 3
         id_discount = self.check_id_discount()
         id_client = self.client_create()
-        prize = self.choose_dishes()
         self.ui.plainTextEdit.setPlainText("Номер вашего заказа: " + str(id_order))
         self.ui.plainTextEdit.appendPlainText("Время заказа:   " + str(ordered_in))
         self.ui.plainTextEdit.appendPlainText("Время доставки: " + str(deliver_in))
-        prize = prize.replace("?", "рублей")
-        self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(prize))
+        self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(self.sum_prize) + " рублей")
 
-       # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
+        # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
             "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
             (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in))
@@ -244,23 +270,8 @@ class Window_clients(QMainWindow):
     # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
 
     # Создаем клиента
-    
 
-    def choose_dishes(self):
-        try:
-            con = Window1().connect_bd()
-            cur = con.cursor()
-            id_restik = int((self.ui.comboBox.currentIndex() + 1))
-            name_dishes = self.ui.tableWidget.currentItem().text()
-            cur.execute("select prize_dish from dishes where id_restaurant = %s and name_dish = %s", (id_restik, name_dishes))
-            prize = cur.fetchone()[0]
 
-            con.commit()
-            con.close()
-            return prize
-
-        except psycopg2.DatabaseError:
-            print("Ошибка")
 
     def client_create(self):
         try:
@@ -313,13 +324,13 @@ class Window_clients(QMainWindow):
         cur = con.cursor()
         col = index + 1
         try:
-            cur.execute("SELECT name_dish FROM dishes WHERE id_restaurant =" + str(col) + "")
+            cur.execute("SELECT name_dish,prize_dish FROM dishes WHERE id_restaurant =" + str(col) + "")
             result = cur.fetchall()
             self.ui.tableWidget.setRowCount(0)
-            self.ui.tableWidget.setColumnCount(1)
-            self.ui.tableWidget.setHorizontalHeaderLabels(["Блюда                                                  "])
+            self.ui.tableWidget.setColumnCount(2)
+            self.ui.tableWidget.setHorizontalHeaderLabels(["Блюда                         ", "Цена            "])
             self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
-            self.ui.tableWidget.sizeHintForColumn(1)
+            self.ui.tableWidget.sizeHintForColumn(2)
             self.ui.tableWidget.resizeColumnsToContents()
 
             for row_number, row_data in enumerate(result):
@@ -447,6 +458,30 @@ class Window_logists(QMainWindow):
         self.ui = Ui_Logists()
         self.ui.setupUi(self)
         self.setWindowTitle('Logists Form')
+        couriers = self.ui.comboBox
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT COUNT(ID_courier) from couriers")
+        result = cur.fetchone()
+        col = int(result[0]) + 1
+        con.commit()
+        for i in range(1, col):
+            cur = con.cursor()
+            cur.execute("select surname from couriers where id_courier =" + str(i) + "")
+            result = cur.fetchone()
+            couriers.addItems(result)
+
+        cur.execute("select id_order from orders where id_status = 3")
+        rez = cur.fetchone()
+        print(rez)
+        #self.ui.comboBox_2.addItem([])
+
+
+
+
+        con.commit()
+        con.close()
+
 
 
 # Всегда нужна. Не дает окну закрыться при запуске

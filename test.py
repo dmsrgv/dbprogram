@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Clients(object):
     def setupUi(self, Clients):
         Clients.setObjectName("Clients")
-        Clients.resize(519, 589)
+        Clients.resize(520, 626)
         Clients.setStyleSheet("background: rgb(24, 24, 24)")
         self.label_2 = QtWidgets.QLabel(Clients)
         self.label_2.setGeometry(QtCore.QRect(10, 20, 151, 31))
@@ -44,7 +44,7 @@ class Ui_Clients(object):
 "             font: bold;            }")
         self.label_4.setObjectName("label_4")
         self.pushButton_2 = QtWidgets.QPushButton(Clients)
-        self.pushButton_2.setGeometry(QtCore.QRect(150, 420, 182, 23))
+        self.pushButton_2.setGeometry(QtCore.QRect(150, 380, 182, 23))
         self.pushButton_2.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
 "     border-style: outset;\n"
 "     border-radius: 10px;\n"
@@ -56,7 +56,7 @@ class Ui_Clients(object):
 "QPushButton::pressed{background-color: rgb(181, 181, 0)}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Clients)
-        self.plainTextEdit.setGeometry(QtCore.QRect(120, 460, 231, 111))
+        self.plainTextEdit.setGeometry(QtCore.QRect(270, 460, 231, 111))
         self.plainTextEdit.setStyleSheet("QPlainTextEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.plainTextEdit.setReadOnly(True)
@@ -130,6 +130,39 @@ class Ui_Clients(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.plainTextEdit_3 = QtWidgets.QPlainTextEdit(Clients)
+        self.plainTextEdit_3.setGeometry(QtCore.QRect(10, 460, 231, 111))
+        self.plainTextEdit_3.setStyleSheet("QPlainTextEdit {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.plainTextEdit_3.setReadOnly(True)
+        self.plainTextEdit_3.setObjectName("plainTextEdit_3")
+        self.label_10 = QtWidgets.QLabel(Clients)
+        self.label_10.setGeometry(QtCore.QRect(270, 230, 121, 16))
+        self.label_10.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_10.setObjectName("label_10")
+        self.pushButton_3 = QtWidgets.QPushButton(Clients)
+        self.pushButton_3.setGeometry(QtCore.QRect(20, 590, 182, 23))
+        self.pushButton_3.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
+"     border-style: outset;\n"
+"     border-radius: 10px;\n"
+"     border-color: beige;\n"
+"     font: bold 14px;\n"
+"     min-width: 10em;\n"
+"     padding: 6px;}\n"
+"QPushButton::hover{background-color: rgb(217, 217, 0)}\n"
+"QPushButton::pressed{background-color: rgb(181, 181, 0)}")
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.label_11 = QtWidgets.QLabel(Clients)
+        self.label_11.setGeometry(QtCore.QRect(10, 430, 121, 16))
+        self.label_11.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_11.setObjectName("label_11")
+        self.label_12 = QtWidgets.QLabel(Clients)
+        self.label_12.setGeometry(QtCore.QRect(280, 430, 121, 16))
+        self.label_12.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_12.setObjectName("label_12")
 
         self.retranslateUi(Clients)
         QtCore.QMetaObject.connectSlotsByName(Clients)
@@ -149,3 +182,8 @@ class Ui_Clients(object):
         self.label_7.setText(_translate("Clients", "Адрес:"))
         self.label_8.setText(_translate("Clients", "Промокод скидки:"))
         self.label_9.setText(_translate("Clients", "Телефон:"))
+        self.plainTextEdit_3.setPlainText(_translate("Clients", "Вы выбрали"))
+        self.label_10.setText(_translate("Clients", "Ваш комментарий:"))
+        self.pushButton_3.setText(_translate("Clients", "Очистить"))
+        self.label_11.setText(_translate("Clients", "Ваш заказ:"))
+        self.label_12.setText(_translate("Clients", "Информация:"))
