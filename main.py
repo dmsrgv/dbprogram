@@ -252,10 +252,14 @@ class Window_clients(QMainWindow):
         id_status = 3
         id_discount = self.check_id_discount()
         id_client = self.client_create()
+        discount_percent = self.discount_percent()
+        sum_prize = self.sum_prize
+        sum_prize = sum_prize*(1-discount_percent/100)
         self.ui.plainTextEdit.setPlainText("Номер вашего заказа: " + str(id_order))
         self.ui.plainTextEdit.appendPlainText("Время заказа:   " + str(ordered_in))
         self.ui.plainTextEdit.appendPlainText("Время доставки: " + str(deliver_in))
-        self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(self.sum_prize) + " рублей")
+        self.ui.plainTextEdit.appendPlainText("СКИДКА: " + str(discount_percent) + "%")
+        self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(sum_prize) + " рублей")
 
         # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
@@ -269,10 +273,16 @@ class Window_clients(QMainWindow):
     # print(id_order)
     # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
 
+    def discount_percent(self):
+        id_discount = self.check_id_discount()
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("select percent_discount from system_discount where id_discount = %s", (id_discount,))
+        percent_discount = cur.fetchone()[0]
+        return percent_discount
+
+
     # Создаем клиента
-
-
-
     def client_create(self):
         try:
             con = Window1().connect_bd()
