@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Supervisors(object):
     def setupUi(self, Supervisors):
         Supervisors.setObjectName("Supervisors")
-        Supervisors.resize(614, 473)
+        Supervisors.resize(602, 473)
         Supervisors.setStyleSheet("background: rgb(24, 24, 24)")
         self.label_2 = QtWidgets.QLabel(Supervisors)
         self.label_2.setGeometry(QtCore.QRect(30, 20, 151, 31))
@@ -51,10 +51,11 @@ class Ui_Supervisors(object):
 "QPushButton::pressed{background-color: rgb(181, 181, 0)}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Supervisors)
-        self.plainTextEdit.setGeometry(QtCore.QRect(30, 220, 231, 81))
+        self.plainTextEdit.setGeometry(QtCore.QRect(30, 220, 231, 201))
         self.plainTextEdit.setStyleSheet("QPlainTextEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.plainTextEdit.setReadOnly(True)
+        self.plainTextEdit.setPlainText("")
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.label = QtWidgets.QLabel(Supervisors)
         self.label.setGeometry(QtCore.QRect(180, 20, 161, 31))
@@ -63,7 +64,7 @@ class Ui_Supervisors(object):
 "    font: 75 20pt \"MS Shell Dlg 2\";}")
         self.label.setObjectName("label")
         self.pushButton_3 = QtWidgets.QPushButton(Supervisors)
-        self.pushButton_3.setGeometry(QtCore.QRect(360, 360, 182, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(360, 380, 182, 31))
         self.pushButton_3.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
 "     border-style: outset;\n"
 "     border-radius: 10px;\n"
@@ -80,10 +81,10 @@ class Ui_Supervisors(object):
 "             font: bold;            }")
         self.comboBox_2.setObjectName("comboBox_2")
         self.graphicsView = QtWidgets.QGraphicsView(Supervisors)
-        self.graphicsView.setGeometry(QtCore.QRect(320, 61, 261, 351))
+        self.graphicsView.setGeometry(QtCore.QRect(320, 61, 261, 401))
         self.graphicsView.setObjectName("graphicsView")
         self.graphicsView_2 = QtWidgets.QGraphicsView(Supervisors)
-        self.graphicsView_2.setGeometry(QtCore.QRect(20, 60, 261, 281))
+        self.graphicsView_2.setGeometry(QtCore.QRect(20, 60, 261, 401))
         self.graphicsView_2.setObjectName("graphicsView_2")
         self.label_4 = QtWidgets.QLabel(Supervisors)
         self.label_4.setGeometry(QtCore.QRect(340, 80, 161, 16))
@@ -150,6 +151,16 @@ class Ui_Supervisors(object):
         self.label_10.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.label_10.setObjectName("label_10")
+        self.label_11 = QtWidgets.QLabel(Supervisors)
+        self.label_11.setGeometry(QtCore.QRect(360, 420, 211, 21))
+        self.label_11.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_11.setObjectName("label_11")
+        self.label_12 = QtWidgets.QLabel(Supervisors)
+        self.label_12.setGeometry(QtCore.QRect(390, 440, 181, 21))
+        self.label_12.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_12.setObjectName("label_12")
         self.graphicsView_2.raise_()
         self.graphicsView.raise_()
         self.label_2.raise_()
@@ -173,6 +184,8 @@ class Ui_Supervisors(object):
         self.label_8.raise_()
         self.label_9.raise_()
         self.label_10.raise_()
+        self.label_11.raise_()
+        self.label_12.raise_()
 
         self.retranslateUi(Supervisors)
         QtCore.QMetaObject.connectSlotsByName(Supervisors)
@@ -182,8 +195,7 @@ class Ui_Supervisors(object):
         Supervisors.setWindowTitle(_translate("Supervisors", "Form"))
         self.label_2.setText(_translate("Supervisors", "Ваша роль:"))
         self.label_3.setText(_translate("Supervisors", "Выберите курьера:"))
-        self.pushButton_2.setText(_translate("Supervisors", "Уволить"))
-        self.plainTextEdit.setPlainText(_translate("Supervisors", "Информация"))
+        self.pushButton_2.setText(_translate("Supervisors", "Выбрать"))
         self.label.setText(_translate("Supervisors", "supervisors"))
         self.pushButton_3.setText(_translate("Supervisors", "Добавить курьера"))
         self.label_4.setText(_translate("Supervisors", "Курьерская служба:"))
@@ -193,3 +205,5 @@ class Ui_Supervisors(object):
         self.label_8.setText(_translate("Supervisors", "Отчество:"))
         self.label_9.setText(_translate("Supervisors", "Телефон:"))
         self.label_10.setText(_translate("Supervisors", "День рождения:"))
+        self.label_11.setText(_translate("Supervisors", "После добавление курьера,"))
+        self.label_12.setText(_translate("Supervisors", "нужно перезайти в систему"))

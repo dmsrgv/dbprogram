@@ -455,6 +455,7 @@ class Window_supervisors(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle('Supervisors Form')
         self.ui.pushButton_3.clicked.connect(self.add_courier)
+        self.ui.pushButton_2.clicked.connect(self.info_courier)
         couriers = self.ui.comboBox
         service = self.ui.comboBox_2
         type = self.ui.comboBox_3
@@ -487,6 +488,32 @@ class Window_supervisors(QMainWindow):
             result = cur.fetchone()
             type.addItems(result)
 
+
+    def info_courier(self):
+        name_courier = self.ui.comboBox.currentText()
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT name from couriers where surname = %s", (name_courier,))
+        name = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("Имя:         " + name)
+        self.ui.plainTextEdit.appendPlainText("Фамилия:     " + name_courier)
+        cur.execute("SELECT phone from couriers where surname = %s", (name_courier,))
+        phone = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("Телефон:      " + phone)
+        cur.execute("SELECT birthday from couriers where surname = %s", (name_courier,))
+        birthday = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("День рождения: " + str(birthday))
+        cur.execute("SELECT passport from couriers where surname = %s", (name_courier,))
+        passport = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("Паспорт:       " + str(passport))
+        cur.execute("SELECT date_activation from couriers where surname = %s", (name_courier,))
+        date_activation = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("Дата активации:       " + str(date_activation))
+        self.ui.plainTextEdit.appendPlainText("-------------------------------------")
+
+
+
+
     def add_courier(self):
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -508,7 +535,7 @@ class Window_supervisors(QMainWindow):
             (
             id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr, date_activation))
         con.commit()
-
+        con.close()
 # Окно для логистов (в разработке)
 
 class Window_logists(QMainWindow):
@@ -551,7 +578,6 @@ class Window_logists(QMainWindow):
         id_delivery = self.id_delivery()
         id_client = self.put_id_client()
         self.ui.plainTextEdit.appendPlainText("Курьер " + courier_name + " назначен на заказ: " + order)
-        print(courier, order, id_delivery, id_client, date_delivery)
         con = Window1().connect_bd()
         cur = con.cursor()
         cur.execute(
