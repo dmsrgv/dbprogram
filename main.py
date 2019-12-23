@@ -1,3 +1,7 @@
+# Created by Dmitry Sergeev, Maria Stepanova
+# All rights reserved
+
+
 # Библиотеки
 from datetime import datetime, timedelta
 import sys
@@ -19,7 +23,6 @@ from PyQt5.QtGui import QRegExpValidator
 
 
 # Главное окно
-
 class Window1(QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
@@ -35,13 +38,10 @@ class Window1(QMainWindow):
         self.ui.label_2.setVisible(True)
 
         # Здесь прописываем событие нажатия на кнопку
-        # self.ui.pushButton.clicked.connect(self.show_registration)
         self.ui.pushButton_2.clicked.connect(self.show_registration)
         self.ui.pushButton.clicked.connect(self.login_enter)
         self.ui.pushButton_3.clicked.connect(self.window_couriers)
-        # self.ui.pushButton_3.clicked.connect(self.connect_bd)
-        # self.ui.pushButton_2.clicked.connect(self.push_query)
-        # self.ui.pushButton_4.clicked.connect(self.select_all)
+
         # Вход
 
     def login_enter(self):
@@ -72,7 +72,7 @@ class Window1(QMainWindow):
         except psycopg2.DatabaseError:
             self.ui.label.setText("НЕ УСПЕХ")
 
-            # Покажем окно регистрации
+        # Покажем окно регистрации
 
     def show_registration(self):
         self.w = Registration()
@@ -108,7 +108,7 @@ class Window1(QMainWindow):
         self.w = Window_supervisors()
         self.w.show()
 
-        # Метод подключени я к бд
+        # Метод подключения к бд
 
     def connect_bd(self):
         try:
@@ -126,7 +126,6 @@ class Window1(QMainWindow):
 
 
 # Окно регистрации
-
 class Registration(QMainWindow):
     def __init__(self):
         super(Registration, self).__init__()
@@ -150,7 +149,6 @@ class Registration(QMainWindow):
     def reg(self):
         con = Window1().connect_bd()
         cur = con.cursor()
-        # cur.execute('CREATE USER %s WITH PASSWORD %s', (self.ui.lineEdit_2.text(), self.ui.lineEdit_3.text()))
         cur.execute(
             "CREATE USER " + self.ui.lineEdit_2.text() + " WITH PASSWORD " + "'" + self.ui.lineEdit_3.text() + "'")
 
@@ -249,18 +247,12 @@ class Window_clients(QMainWindow):
         self.ui.plainTextEdit.appendPlainText("СКИДКА: " + str(discount_percent) + "%")
         self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(sum_prize) + " рублей")
 
-        # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
             "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in, prize) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in, sum_prize))
+            (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in,
+             sum_prize))
         con.commit()
-
-        # rezz = self.poluchim_x()
-
-    ## print(rezz)
-    # print(id_order)
-    # cur.execute("INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount) VALUES (3420, 'John', 18, 'Computer Science', 'ICT')")
-
+        #Узнаем скидку
     def discount_percent(self):
         id_discount = self.check_id_discount()
         con = Window1().connect_bd()
@@ -321,7 +313,7 @@ class Window_clients(QMainWindow):
         cur = con.cursor()
         col = index + 1
         try:
-            cur.execute("SELECT name_dish,prize_dish FROM dishes WHERE id_restaurant =" + str(col) + "")
+            cur.execute("SELECT name_dish,prize_dish FROM (SELECT * FROM show_dishes()) AS dishes WHERE id_restaurant =" + str(col) + "")
             result = cur.fetchall()
             self.ui.tableWidget.setRowCount(0)
             self.ui.tableWidget.setColumnCount(2)
@@ -593,7 +585,7 @@ class Window_supervisors(QMainWindow):
                 id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr,
                 date_activation))
         con.commit()
-        cur.execute("INSERT INTO couriers_password (id_courier, password) VALUES (%s, %s)",(id_courier, password))
+        cur.execute("INSERT INTO couriers_password (id_courier, password) VALUES (%s, %s)", (id_courier, password))
         con.commit()
         con.close()
         self.ui.label_11.setText("ID: " + str(id_courier))
@@ -688,7 +680,6 @@ class Window_couriers(QMainWindow):
         value = self.ui.tableWidget.item(row, col).text()
         return value
 
-
     def delivery(self):
         id = self.ui.lineEdit.text()
         value = self.click_table_couriers()
@@ -722,8 +713,9 @@ class Window_couriers(QMainWindow):
         try:
             con = Window1().connect_bd()
             cur = con.cursor()
-            cur.execute("SELECT EXISTS(SELECT id_courier FROM couriers_password WHERE id_courier = %s and password = %s)",
-                        (id, password))
+            cur.execute(
+                "SELECT EXISTS(SELECT id_courier FROM couriers_password WHERE id_courier = %s and password = %s)",
+                (id, password))
             true = cur.fetchone()[0]
             con.close()
 
@@ -746,7 +738,9 @@ class Window_couriers(QMainWindow):
                 result = cur.fetchall()
                 self.ui.tableWidget.setRowCount(0)
                 self.ui.tableWidget.setColumnCount(8)
-                self.ui.tableWidget.setHorizontalHeaderLabels(["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к", "Заказано в", "Тип оплаты"])
+                self.ui.tableWidget.setHorizontalHeaderLabels(
+                    ["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к",
+                     "Заказано в", "Тип оплаты"])
                 self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
                 self.ui.tableWidget.sizeHintForColumn(8)
                 self.ui.tableWidget.resizeColumnsToContents()
@@ -764,10 +758,6 @@ class Window_couriers(QMainWindow):
                 self.ui.label_5.setText("Неправильный id или пароль")
         except psycopg2.DatabaseError:
             self.ui.label_5.setText("Неправильный id или пароль")
-
-
-
-
 
 
 # Всегда нужна. Не дает окну закрыться при запуске
