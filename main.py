@@ -229,7 +229,7 @@ class Window_clients(QMainWindow):
     def zakazat(self):
         now = datetime.now()
         ordered_in = now.strftime("%H:%M:%S")
-        after = now + timedelta(minutes=45)
+        after = now + timedelta(minutes=2)
         deliver_in = after.strftime("%H:%M:%S")
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -680,6 +680,7 @@ class Window_couriers(QMainWindow):
         self.ui.pushButton_5.setVisible(False)
         self.ui.pushButton_5.clicked.connect(self.delivery)
         self.ui.tableWidget.clicked.connect(self.click_table_couriers)
+        self.resize(257, 163)
 
     def click_table_couriers(self):
         row = self.ui.tableWidget.currentRow()
@@ -727,6 +728,7 @@ class Window_couriers(QMainWindow):
             con.close()
 
             if true:
+                self.resize(710, 638)
                 self.ui.tableWidget.setVisible(True)
                 self.ui.label_4.setText("Ваши заказы:")
                 self.ui.pushButton_5.setVisible(True)
