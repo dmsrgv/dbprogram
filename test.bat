@@ -1,1 +1,1 @@
-pyuic5 test.ui -o test.py
+pyuic5 couriers.ui -o couriers.py

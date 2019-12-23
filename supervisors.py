@@ -152,12 +152,12 @@ class Ui_Supervisors(object):
 "             font: bold;            }")
         self.label_10.setObjectName("label_10")
         self.label_11 = QtWidgets.QLabel(Supervisors)
-        self.label_11.setGeometry(QtCore.QRect(360, 420, 211, 21))
+        self.label_11.setGeometry(QtCore.QRect(330, 420, 211, 21))
         self.label_11.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.label_11.setObjectName("label_11")
         self.label_12 = QtWidgets.QLabel(Supervisors)
-        self.label_12.setGeometry(QtCore.QRect(390, 440, 181, 21))
+        self.label_12.setGeometry(QtCore.QRect(330, 440, 181, 21))
         self.label_12.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.label_12.setObjectName("label_12")

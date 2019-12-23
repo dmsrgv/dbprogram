@@ -1,8 +1,10 @@
 # Библиотеки
 from datetime import datetime, timedelta
 import sys
+import random
 import psycopg2
 # Импортируем наш интерфейс
+from couriers import *
 from design import *
 from registration import *
 from test import *
@@ -36,10 +38,10 @@ class Window1(QMainWindow):
         # self.ui.pushButton.clicked.connect(self.show_registration)
         self.ui.pushButton_2.clicked.connect(self.show_registration)
         self.ui.pushButton.clicked.connect(self.login_enter)
+        self.ui.pushButton_3.clicked.connect(self.window_couriers)
         # self.ui.pushButton_3.clicked.connect(self.connect_bd)
         # self.ui.pushButton_2.clicked.connect(self.push_query)
         # self.ui.pushButton_4.clicked.connect(self.select_all)
-
         # Вход
 
     def login_enter(self):
@@ -67,7 +69,6 @@ class Window1(QMainWindow):
                 self.window_logists()
             self.ui.label.setText("УСПЕХ")
             return con
-
         except psycopg2.DatabaseError:
             self.ui.label.setText("НЕ УСПЕХ")
 
@@ -75,6 +76,12 @@ class Window1(QMainWindow):
 
     def show_registration(self):
         self.w = Registration()
+        self.w.show()
+
+        # Вызов окна курьеров
+
+    def window_couriers(self):
+        self.w = Window_couriers()
         self.w.show()
 
         # Вызов окна для клиентов
@@ -116,22 +123,6 @@ class Window1(QMainWindow):
             return con
         except psycopg2.DatabaseError:
             self.ui.label.setText("Подключение не удалось")
-
-            # Метод отправки запросов ( не используется пока-что)
-
-    def push_query(self):
-        con = self.connect_bd()
-        cur = con.cursor()
-        try:
-            cur.execute(self.ui.plainTextEdit.toPlainText())
-            self.ui.label_2.setText("Запрос выполнен!")
-            con.commit()
-            con.close()
-        except psycopg2.DatabaseError:
-            self.ui.label_2.setText("Ошибка")
-        finally:
-            if con:
-                con.close()
 
 
 # Окно регистрации
@@ -260,8 +251,8 @@ class Window_clients(QMainWindow):
 
         # print(id_order, id_type_payments, id_status, id_discount, id_client, id_discount)
         cur.execute(
-            "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in))
+            "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in, prize) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in, sum_prize))
         con.commit()
 
         # rezz = self.poluchim_x()
@@ -591,13 +582,22 @@ class Window_supervisors(QMainWindow):
         dr = self.ui.lineEdit_6.text()
         now = datetime.now()
         date_activation = now.strftime("%Y-%m-%d")
+        size_password = 8
+        chars_password = "abcdefghijklnopqrstuvwxyz1234567890"
+        password = ""
+        for i in range(size_password):
+            password += random.choice(chars_password)
         cur.execute(
             "INSERT INTO couriers (id_courier, id_courier_service, id_type_courier, id_status_courier, surname, name, second_name, phone, birthday, date_activation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (
                 id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr,
                 date_activation))
         con.commit()
+        cur.execute("INSERT INTO couriers_password (id_courier, password) VALUES (%s, %s)",(id_courier, password))
+        con.commit()
         con.close()
+        self.ui.label_11.setText("ID: " + str(id_courier))
+        self.ui.label_12.setText("PASSWORD: " + str(password))
 
 
 # Окно для логистов
@@ -666,6 +666,106 @@ class Window_logists(QMainWindow):
         cur.execute("select count(id_delivery) from deliveries")
         id_delivery = cur.fetchone()[0] + 1
         return id_delivery
+
+
+class Window_couriers(QMainWindow):
+    def __init__(self):
+        super(Window_couriers, self).__init__()
+        self.ui = Ui_Couriers()
+        self.ui.setupUi(self)
+        self.setWindowTitle('Couriers Form')
+        self.ui.pushButton_4.clicked.connect(self.opr_login)
+        self.ui.tableWidget.setVisible(False)
+        self.ui.label_4.setText("")
+        self.ui.pushButton_5.setVisible(False)
+        self.ui.pushButton_5.clicked.connect(self.delivery)
+        self.ui.tableWidget.clicked.connect(self.click_table_couriers)
+
+    def click_table_couriers(self):
+        row = self.ui.tableWidget.currentRow()
+        col = 0
+        value = self.ui.tableWidget.item(row, col).text()
+        return value
+
+
+    def delivery(self):
+        id = self.ui.lineEdit.text()
+        value = self.click_table_couriers()
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("UPDATE orders set id_status=1 where id_order= %s", (value,))
+        con.commit()
+        self.ui.tableWidget.setRowCount(0)
+        cur.execute(
+            "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
+            (id,))
+        result = cur.fetchall()
+        self.ui.tableWidget.setRowCount(0)
+        self.ui.tableWidget.setColumnCount(8)
+        self.ui.tableWidget.setHorizontalHeaderLabels(
+            ["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к", "Заказано в",
+             "Тип оплаты"])
+        self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
+        self.ui.tableWidget.sizeHintForColumn(8)
+        self.ui.tableWidget.resizeColumnsToContents()
+
+        for row_number, row_data in enumerate(result):
+            self.ui.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.ui.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+        self.ui.tableWidget.resizeColumnsToContents()
+
+    def opr_login(self):
+        id = self.ui.lineEdit.text()
+        password = self.ui.lineEdit_2.text()
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            cur.execute("SELECT EXISTS(SELECT id_courier FROM couriers_password WHERE id_courier = %s and password = %s)",
+                        (id, password))
+            true = cur.fetchone()[0]
+            con.close()
+
+            if true:
+                self.ui.tableWidget.setVisible(True)
+                self.ui.label_4.setText("Ваши заказы:")
+                self.ui.pushButton_5.setVisible(True)
+                self.ui.label_5.setText("")
+                self.ui.lineEdit.setVisible(False)
+                self.ui.lineEdit_2.setVisible(False)
+                self.ui.label_3.setText("")
+                self.ui.label_2.setText("")
+                self.ui.pushButton_4.setVisible(False)
+                con = Window1().connect_bd()
+                cur = con.cursor()
+                cur.execute(
+                    "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
+                    (id,))
+                result = cur.fetchall()
+                self.ui.tableWidget.setRowCount(0)
+                self.ui.tableWidget.setColumnCount(8)
+                self.ui.tableWidget.setHorizontalHeaderLabels(["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к", "Заказано в", "Тип оплаты"])
+                self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
+                self.ui.tableWidget.sizeHintForColumn(8)
+                self.ui.tableWidget.resizeColumnsToContents()
+
+                for row_number, row_data in enumerate(result):
+                    self.ui.tableWidget.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.ui.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+                self.ui.tableWidget.resizeColumnsToContents()
+                cur.execute("SELECT name from couriers where id_courier = %s", (id,))
+                name = cur.fetchone()[0]
+                self.ui.label_6.setText("Привет, " + str(name))
+
+            else:
+                self.ui.label_5.setText("Неправильный id или пароль")
+        except psycopg2.DatabaseError:
+            self.ui.label_5.setText("Неправильный id или пароль")
+
+
+
+
 
 
 # Всегда нужна. Не дает окну закрыться при запуске

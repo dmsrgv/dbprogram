@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(326, 257)
+        MainWindow.resize(291, 226)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("background: rgb(24, 24, 24)")
         self.centralwidget.setObjectName("centralwidget")
@@ -63,6 +63,18 @@ class Ui_MainWindow(object):
 "QPushButton::pressed{background-color: rgb(181, 181, 0)}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.verticalLayout.addWidget(self.pushButton_2)
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setStyleSheet("QPushButton {background-color:rgb(0, 170, 0);\n"
+"     border-style: outset;\n"
+"     border-radius: 10px;\n"
+"     border-color: beige;\n"
+"     font: bold 14px;\n"
+"     min-width: 10em;\n"
+"     padding: 6px;}\n"
+"QPushButton::hover{background-color: rgb(0, 243, 0)}\n"
+"QPushButton::pressed{background-color: rgb(0, 74, 0)}")
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.verticalLayout.addWidget(self.pushButton_3)
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
@@ -81,3 +93,4 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Пароль:"))
         self.pushButton.setText(_translate("MainWindow", "Войти"))
         self.pushButton_2.setText(_translate("MainWindow", "Регистрация"))
+        self.pushButton_3.setText(_translate("MainWindow", "Вход для курьеров"))
