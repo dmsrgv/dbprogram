@@ -31,7 +31,11 @@ class Ui_Clients(object):
         self.comboBox = QtWidgets.QComboBox(Clients)
         self.comboBox.setGeometry(QtCore.QRect(10, 190, 231, 22))
         self.comboBox.setStyleSheet("QComboBox {color: rgb(85, 255, 0);\n"
-"             font: bold;            }")
+"                     font: bold;\n"
+"}\n"
+"QComboBox:editable {\n"
+"    color:  rgb(85, 255, 0)\n"
+"}")
         self.comboBox.setObjectName("comboBox")
         self.label_3 = QtWidgets.QLabel(Clients)
         self.label_3.setGeometry(QtCore.QRect(20, 150, 141, 16))

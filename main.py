@@ -83,6 +83,7 @@ class Window1(QMainWindow):
     def window_couriers(self):
         self.w = Window_couriers()
         self.w.show()
+        self.close()
 
         # Вызов окна для клиентов
 
@@ -689,16 +690,16 @@ class Window_couriers(QMainWindow):
         con.commit()
         self.ui.tableWidget.setRowCount(0)
         cur.execute(
-            "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
+            "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments, orders.prize from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
             (id,))
         result = cur.fetchall()
         self.ui.tableWidget.setRowCount(0)
-        self.ui.tableWidget.setColumnCount(8)
+        self.ui.tableWidget.setColumnCount(9)
         self.ui.tableWidget.setHorizontalHeaderLabels(
             ["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к", "Заказано в",
-             "Тип оплаты"])
+             "Тип оплаты", "Цена"])
         self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
-        self.ui.tableWidget.sizeHintForColumn(8)
+        self.ui.tableWidget.sizeHintForColumn(9)
         self.ui.tableWidget.resizeColumnsToContents()
 
         for row_number, row_data in enumerate(result):
@@ -733,16 +734,16 @@ class Window_couriers(QMainWindow):
                 con = Window1().connect_bd()
                 cur = con.cursor()
                 cur.execute(
-                    "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
+                    "SELECT orders.id_order, clients.name_client, clients.address_client, clients.phone_client, clients.comment_client, orders.deliver_in, orders.ordered_in, type_payments.name_type_payments, orders.prize from orders, deliveries, clients, type_payments where orders.id_order = deliveries.id_order and orders.id_client = clients.id_client and orders.id_type_payments = type_payments.id_type_payments and deliveries.id_courier = %s and orders.id_status = 4",
                     (id,))
                 result = cur.fetchall()
                 self.ui.tableWidget.setRowCount(0)
-                self.ui.tableWidget.setColumnCount(8)
+                self.ui.tableWidget.setColumnCount(9)
                 self.ui.tableWidget.setHorizontalHeaderLabels(
                     ["Номер заказа", "Имя клиента", "Адрес клиента", "Телефон", "Комментарий", "Доставить к",
-                     "Заказано в", "Тип оплаты"])
+                     "Заказано в", "Тип оплаты", "Цена"])
                 self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
-                self.ui.tableWidget.sizeHintForColumn(8)
+                self.ui.tableWidget.sizeHintForColumn(9)
                 self.ui.tableWidget.resizeColumnsToContents()
 
                 for row_number, row_data in enumerate(result):

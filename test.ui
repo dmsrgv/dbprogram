@@ -54,7 +54,11 @@
    </property>
    <property name="styleSheet">
     <string notr="true">QComboBox {color: rgb(85, 255, 0);
-			 font: bold;			}</string>
+					 font: bold;
+}
+QComboBox:editable {
+    color:  rgb(85, 255, 0)
+}</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
