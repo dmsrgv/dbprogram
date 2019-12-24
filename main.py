@@ -197,6 +197,7 @@ class Registration(QMainWindow):
 
             con.commit()
             con.close()
+            self.close()
         except psycopg2.DatabaseError:
             print("Ошибка")
 
