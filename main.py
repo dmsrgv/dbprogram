@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import sys
 import random
 import psycopg2
+import hashlib
 # Импортируем наш интерфейс
 from couriers import *
 from design import *
@@ -50,30 +51,59 @@ class Window1(QMainWindow):
     def login_enter(self):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
-        try:
-            con = psycopg2.connect(
-                database="DeliveryFood",
-                user=username,
-                password=password,
-                host="127.0.0.1",
-                port="5432"
-            )
-            cur = con.cursor()
-            cur.execute(
-                "select * from information_schema.applicable_roles WHERE grantee =" + "'" + username + "'")
-            role = cur.fetchone()[1]
-            if role == "clients":
-                self.window_clients()
-            elif role == "supervisors":
-                self.window_supervisors()
-            elif role == "admins":
-                self.window_admins()
-            elif role == "logists":
-                self.window_logists()
-            self.ui.label.setText("УСПЕХ")
-            return con
-        except psycopg2.DatabaseError:
+        pasw = password + username
+        h = hashlib.md5(pasw.encode())
+        pasw = h.hexdigest() + "deliveryfood"
+        h = hashlib.md5(pasw.encode())
+        pasw = "md5" + h.hexdigest()
+        con = self.connect_bd()
+        cur = con.cursor()
+        cur.execute("select passwd from pg_shadow where usename = %s", (username,))
+        passw = cur.fetchone()[0]
+        if passw == pasw:
+            try:
+                con = self.connect_bd()
+                cur = con.cursor()
+                cur.execute("select * from information_schema.applicable_roles WHERE grantee =" + "'" + username + "'")
+                role = cur.fetchone()[1]
+                if role == "clients":
+                    self.window_clients()
+                elif role == "supervisors":
+                    self.window_supervisors()
+                elif role == "admins":
+                    self.window_admins()
+                elif role == "logists":
+                    self.window_logists()
+                self.ui.label.setText("УСПЕХ")
+                return con
+            except psycopg2.DatabaseError:
+                self.ui.label.setText("НЕ УСПЕХ")
+        else:
             self.ui.label.setText("НЕ УСПЕХ")
+        # try:
+        #     con = psycopg2.connect(
+        #         database="DeliveryFood",
+        #         user=username,
+        #         password=password,
+        #         host="127.0.0.1",
+        #         port="5432"
+        #     )
+        #     cur = con.cursor()
+        #     cur.execute(
+        #         "select * from information_schema.applicable_roles WHERE grantee =" + "'" + username + "'")
+        #     role = cur.fetchone()[1]
+        #     if role == "clients":
+        #         self.window_clients()
+        #     elif role == "supervisors":
+        #         self.window_supervisors()
+        #     elif role == "admins":
+        #         self.window_admins()
+        #     elif role == "logists":
+        #         self.window_logists()
+        #     self.ui.label.setText("УСПЕХ")
+        #     return con
+        # except psycopg2.DatabaseError:
+        #     self.ui.label.setText("НЕ УСПЕХ")
 
         # Покажем окно регистрации
 
@@ -152,11 +182,16 @@ class Registration(QMainWindow):
 
     def reg(self):
         try:
+            username = self.ui.lineEdit_2.text()
+            password = self.ui.lineEdit_3.text()
             con = Window1().connect_bd()
             cur = con.cursor()
             cur.execute(
                 "CREATE USER " + self.ui.lineEdit_2.text() + " WITH PASSWORD " + "'" + self.ui.lineEdit_3.text() + "'")
-
+            cur.execute("SELECT make_pass(%s, %s, 'deliveryfood')", (password, username))
+            make_password = cur.fetchone()[0]
+            cur.execute("ALTER ROLE " + username + " WITH PASSWORD " + "'" + make_password + "'")
+            con.commit()
             con.commit()
             cur.execute("GRANT clients TO " + self.ui.lineEdit_2.text())
 
@@ -505,7 +540,6 @@ class Window_supervisors(QMainWindow):
         cur = con.cursor()
         cur.execute("SELECT id_courier from couriers where surname = %s", (name_courier,))
         id = cur.fetchone()[0]
-        print("ВЗЯЛ ", id)
         self.ui.plainTextEdit.appendPlainText("ID курьера: " + str(id))
         cur.execute("SELECT name from couriers where surname = %s", (name_courier,))
         name = cur.fetchone()[0]
