@@ -288,12 +288,22 @@ class Window_clients(QMainWindow):
         self.ui.plainTextEdit.appendPlainText("Время доставки: " + str(deliver_in))
         self.ui.plainTextEdit.appendPlainText("СКИДКА: " + str(discount_percent) + "%")
         self.ui.plainTextEdit.appendPlainText("Сумма к оплате: " + str(sum_prize) + " рублей")
+        kek = self.ui.plainTextEdit_3.toPlainText().split('\n')
 
         cur.execute(
             "INSERT INTO orders (id_order,id_type_payments,id_status,deliver_in,id_restaurant, id_client, id_discount, ordered_in, prize) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in,
              sum_prize))
         con.commit()
+
+        for i in range(len(kek)):
+            dish = kek[i]
+            cur.execute("SELECT id_dish from dishes where name_dish = %s",(dish,))
+            id_blud = cur.fetchone()[0]
+            cur.execute("SELECT count(number_dishes) from dishes_in_order")
+            count_dishes = cur.fetchone()[0] + 1
+            cur.execute("INSERT INTO dishes_in_order (number_dishes, id_order, dish) VALUES (%s, %s, %s)", (count_dishes, id_order, id_blud))
+            con.commit()
         # Узнаем скидку
 
     def discount_percent(self):
@@ -375,31 +385,6 @@ class Window_clients(QMainWindow):
             con.close()
         except psycopg2.DatabaseError:
             print("Ошибка")
-        finally:
-            if con:
-                con.close()
-
-                # Не используется пока-что
-
-    def client_query(self):
-        con = Window1().connect_bd()
-        cur = con.cursor()
-        try:
-            cur.execute("SELECT * FROM " + self.ui.lineEdit.text())
-            result = cur.fetchall()
-            self.ui.tableWidget.setRowCount(0)
-            self.ui.tableWidget.setColumnCount(12)
-
-            for row_number, row_data in enumerate(result):
-                self.ui.tableWidget.insertRow(row_number)
-                for column_number, data in enumerate(row_data):
-                    self.ui.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
-                self.ui.tableWidget.setColumnCount(column_number + 1)
-            con.commit()
-            con.close()
-            self.ui.label.setText("Выполнено!")
-        except psycopg2.DatabaseError:
-            self.ui.label.setText("Ошибка!")
         finally:
             if con:
                 con.close()
