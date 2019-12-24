@@ -61,28 +61,34 @@ class Window1(QMainWindow):
         pasw = "md5" + h.hexdigest()
         con = self.connect_bd()
         cur = con.cursor()
-        cur.execute("select passwd from pg_shadow where usename = %s", (username,))
-        passw = cur.fetchone()[0]
-        if passw == pasw:
-            try:
-                con = self.connect_bd()
-                cur = con.cursor()
-                cur.execute("select * from information_schema.applicable_roles WHERE grantee =" + "'" + username + "'")
-                role = cur.fetchone()[1]
-                if role == "clients":
-                    self.window_clients()
-                elif role == "supervisors":
-                    self.window_supervisors()
-                elif role == "admins":
-                    self.window_admins()
-                elif role == "logists":
-                    self.window_logists()
-                self.ui.label.setText("УСПЕХ")
-                return con
-            except psycopg2.DatabaseError:
+        cur.execute("select exists (select passwd from pg_shadow where usename = %s)", (username,))
+        true = cur.fetchone()[0]
+        if true:
+            cur.execute("select passwd from pg_shadow where usename = %s", (username,))
+            passw = cur.fetchone()[0]
+            if passw == pasw:
+                try:
+                    con = self.connect_bd()
+                    cur = con.cursor()
+                    cur.execute("select * from information_schema.applicable_roles WHERE grantee =" + "'" + username + "'")
+                    role = cur.fetchone()[1]
+                    if role == "clients":
+                        self.window_clients()
+                    elif role == "supervisors":
+                        self.window_supervisors()
+                    elif role == "admins":
+                        self.window_admins()
+                    elif role == "logists":
+                        self.window_logists()
+                    self.ui.label.setText("УСПЕХ")
+                    return con
+                except psycopg2.DatabaseError:
+                    self.ui.label.setText("НЕ УСПЕХ")
+            else:
                 self.ui.label.setText("НЕ УСПЕХ")
         else:
             self.ui.label.setText("НЕ УСПЕХ")
+
         # try:
         #     con = psycopg2.connect(
         #         database="DeliveryFood",
