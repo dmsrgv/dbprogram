@@ -1,7 +1,6 @@
 # Created by Dmitry Sergeev, Maria Stepanova
 # All rights reserved
 
-
 # Библиотеки
 from datetime import datetime, timedelta
 import sys
@@ -16,10 +15,14 @@ from zakaz import *
 from admins import *
 from logists import *
 from supervisors import *
+from requisites import *
+from passport import *
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtWidgets import QWidget, QMainWindow, QApplication, QAction
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
+
+id_lol = 0
 
 
 # Главное окно
@@ -148,16 +151,19 @@ class Registration(QMainWindow):
         # Создание пользователя
 
     def reg(self):
-        con = Window1().connect_bd()
-        cur = con.cursor()
-        cur.execute(
-            "CREATE USER " + self.ui.lineEdit_2.text() + " WITH PASSWORD " + "'" + self.ui.lineEdit_3.text() + "'")
+        try:
+            con = Window1().connect_bd()
+            cur = con.cursor()
+            cur.execute(
+                "CREATE USER " + self.ui.lineEdit_2.text() + " WITH PASSWORD " + "'" + self.ui.lineEdit_3.text() + "'")
 
-        con.commit()
-        cur.execute("GRANT clients TO " + self.ui.lineEdit_2.text())
+            con.commit()
+            cur.execute("GRANT clients TO " + self.ui.lineEdit_2.text())
 
-        con.commit()
-        con.close()
+            con.commit()
+            con.close()
+        except psycopg2.DatabaseError:
+            print("Ошибка")
 
     # Окно для клиентов
 
@@ -253,7 +259,8 @@ class Window_clients(QMainWindow):
             (id_order, id_type_payments, id_status, deliver_in, id_restaurant, id_client, id_discount, ordered_in,
              sum_prize))
         con.commit()
-        #Узнаем скидку
+        # Узнаем скидку
+
     def discount_percent(self):
         id_discount = self.check_id_discount()
         con = Window1().connect_bd()
@@ -314,7 +321,9 @@ class Window_clients(QMainWindow):
         cur = con.cursor()
         col = index + 1
         try:
-            cur.execute("SELECT name_dish,prize_dish FROM (SELECT * FROM show_dishes()) AS dishes WHERE id_restaurant =" + str(col) + "")
+            cur.execute(
+                "SELECT name_dish,prize_dish FROM (SELECT * FROM show_dishes()) AS dishes WHERE id_restaurant =" + str(
+                    col) + "")
             result = cur.fetchall()
             self.ui.tableWidget.setRowCount(0)
             self.ui.tableWidget.setColumnCount(2)
@@ -351,65 +360,6 @@ class Window_clients(QMainWindow):
                 for column_number, data in enumerate(row_data):
                     self.ui.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
                 self.ui.tableWidget.setColumnCount(column_number + 1)
-            con.commit()
-            con.close()
-            self.ui.label.setText("Выполнено!")
-        except psycopg2.DatabaseError:
-            self.ui.label.setText("Ошибка!")
-        finally:
-            if con:
-                con.close()
-
-
-# Не используется
-
-class Zakaz(QMainWindow):
-    def __init__(self):
-        super(Zakaz, self).__init__()
-        self.ui = Ui_Zakaz()
-        self.ui.setupUi(self)
-        self.setWindowTitle('Zakaz Form')
-        self.ui.comboBox.activated.connect(self.onActivation)
-        rest = self.ui.comboBox
-        con = Window1().connect_bd()
-        cur = con.cursor()
-        cur.execute("SELECT COUNT(id_restaurant) from restaurant")
-        result = cur.fetchone()
-        col = int(result[0]) + 1
-        con.commit()
-        try:
-            for i in range(1, col):
-                cur = con.cursor()
-                cur.execute("select name_restaurant from restaurant where id_restaurant =" + str(i) + "")
-                result = cur.fetchone()
-                rest.addItems(result)
-
-            con.commit()
-            con.close()
-
-        except psycopg2.DatabaseError:
-            print("Error")
-            self.ui.plainTextEdit.setPlainText("Ошибка")
-
-    def onActivation(self, index):
-        con = Window1().connect_bd()
-        cur = con.cursor()
-        col = index + 1
-        try:
-            cur.execute("SELECT name_dish FROM dishes WHERE id_restaurant =" + str(col) + "")
-            result = cur.fetchall()
-            self.ui.tableWidget.setRowCount(0)
-            self.ui.tableWidget.setColumnCount(12)
-            self.ui.tableWidget.setHorizontalHeaderLabels(["Блюда"])
-            self.ui.tableWidget.horizontalHeaderItem(0).setTextAlignment(Qt.AlignHCenter)
-            self.ui.tableWidget.sizeHintForColumn(1)
-            self.ui.tableWidget.resizeColumnsToContents()
-
-            for row_number, row_data in enumerate(result):
-                self.ui.tableWidget.insertRow(row_number)
-                for column_number, data in enumerate(row_data):
-                    self.ui.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
-                self.ui.tableWidget.setColumnCount(1)
             con.commit()
             con.close()
             self.ui.label.setText("Выполнено!")
@@ -499,12 +449,16 @@ class Window_admins(QMainWindow):
 # Окно для супервайзеров
 class Window_supervisors(QMainWindow):
     def __init__(self):
-        super(Window_supervisors, self).__init__()
+        super().__init__()
         self.ui = Ui_Supervisors()
         self.ui.setupUi(self)
         self.setWindowTitle('Supervisors Form')
         self.ui.pushButton_3.clicked.connect(self.add_courier)
         self.ui.pushButton_2.clicked.connect(self.info_courier)
+        self.ui.pushButton.clicked.connect(self.show_passport)
+        self.ui.pushButton_4.clicked.connect(self.show_requisites)
+        self.ui.pushButton.setEnabled(False)
+        self.ui.pushButton_4.setEnabled(False)
         couriers = self.ui.comboBox
         service = self.ui.comboBox_2
         type = self.ui.comboBox_3
@@ -537,10 +491,22 @@ class Window_supervisors(QMainWindow):
             result = cur.fetchone()
             type.addItems(result)
 
+    def show_passport(self):
+        self.w = Passport()
+        self.w.show()
+
+    def show_requisites(self):
+        self.w = Requisites()
+        self.w.show()
+
     def info_courier(self):
         name_courier = self.ui.comboBox.currentText()
         con = Window1().connect_bd()
         cur = con.cursor()
+        cur.execute("SELECT id_courier from couriers where surname = %s", (name_courier,))
+        id = cur.fetchone()[0]
+        print("ВЗЯЛ ", id)
+        self.ui.plainTextEdit.appendPlainText("ID курьера: " + str(id))
         cur.execute("SELECT name from couriers where surname = %s", (name_courier,))
         name = cur.fetchone()[0]
         self.ui.plainTextEdit.appendPlainText("Имя:         " + name)
@@ -557,7 +523,15 @@ class Window_supervisors(QMainWindow):
         cur.execute("SELECT date_activation from couriers where surname = %s", (name_courier,))
         date_activation = cur.fetchone()[0]
         self.ui.plainTextEdit.appendPlainText("Дата активации:       " + str(date_activation))
+        cur.execute("SELECT bank_account from couriers where surname = %s", (name_courier,))
+        bank_account = cur.fetchone()[0]
+        self.ui.plainTextEdit.appendPlainText("Номер счёта: " + str(bank_account))
         self.ui.plainTextEdit.appendPlainText("-------------------------------------")
+        self.ui.pushButton.setEnabled(True)
+        self.ui.pushButton_4.setEnabled(True)
+        global id_lol
+        id_lol = id
+        return id
 
     def add_courier(self):
         con = Window1().connect_bd()
@@ -576,15 +550,17 @@ class Window_supervisors(QMainWindow):
         now = datetime.now()
         date_activation = now.strftime("%Y-%m-%d")
         size_password = 8
+        passport = self.ui.lineEdit_7.text()
+        bank_account = self.ui.lineEdit_8.text()
         chars_password = "abcdefghijklnopqrstuvwxyz1234567890"
         password = ""
         for i in range(size_password):
             password += random.choice(chars_password)
         cur.execute(
-            "INSERT INTO couriers (id_courier, id_courier_service, id_type_courier, id_status_courier, surname, name, second_name, phone, birthday, date_activation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            "INSERT INTO couriers (id_courier, id_courier_service, id_type_courier, id_status_courier, surname, name, second_name, phone, birthday, passport, date_activation, bank_account) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (
-                id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr,
-                date_activation))
+                id_courier, id_service, id_type, id_status_courier, surname, name, second_name, phone, dr, passport,
+                date_activation, bank_account))
         con.commit()
         cur.execute("INSERT INTO couriers_password (id_courier, password) VALUES (%s, %s)", (id_courier, password))
         con.commit()
@@ -759,6 +735,104 @@ class Window_couriers(QMainWindow):
                 self.ui.label_5.setText("Неправильный id или пароль")
         except psycopg2.DatabaseError:
             self.ui.label_5.setText("Неправильный id или пароль")
+
+            # Добавить/обновить данные паспорта
+
+
+class Passport(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Passport()
+        self.ui.setupUi(self)
+        self.ui.pushButton_4.clicked.connect(self.ok_passport)
+        self.ui.pushButton_5.clicked.connect(self.not_passport)
+        id = id_lol
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT passport from couriers where id_courier = %s", (id,))
+        serial_number = cur.fetchone()[0]
+        cur.execute("SELECT place_of_birth from passport_date where serial_number = %s", (serial_number,))
+        place_of_birth = cur.fetchone()[0]
+        self.ui.lineEdit_2.setText(str(place_of_birth))
+        cur.execute("SELECT issued_by_whom from passport_date where serial_number = %s", (serial_number,))
+        issued_by_whom = cur.fetchone()[0]
+        self.ui.lineEdit_3.setText(str(issued_by_whom))
+        cur.execute("SELECT when_issued from passport_date where serial_number = %s", (serial_number,))
+        when_issued = cur.fetchone()[0]
+        self.ui.lineEdit_4.setText(str(when_issued))
+        cur.execute("SELECT unit_code from passport_date where serial_number = %s", (serial_number,))
+        unit_code = cur.fetchone()[0]
+        self.ui.lineEdit_5.setText(str(unit_code))
+        cur.execute("SELECT unit_code from passport_date where serial_number = %s", (serial_number,))
+        address_registration = cur.fetchone()[0]
+        self.ui.lineEdit_6.setText(str(address_registration))
+
+    def ok_passport(self):
+        id = id_lol
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT passport from couriers where id_courier = %s", (id,))
+        serial_number = cur.fetchone()[0]
+        new_place_of_birth = self.ui.lineEdit_2.text()
+        new_issued_by_whom = self.ui.lineEdit_3.text()
+        new_when_issued = self.ui.lineEdit_4.text()
+        new_unit_code = self.ui.lineEdit_5.text()
+        new_address_registration = self.ui.lineEdit_6.text()
+        cur.execute("UPDATE passport_date set place_of_birth = %s where serial_number = %s",
+                    (new_place_of_birth, serial_number))
+        cur.execute("UPDATE passport_date set issued_by_whom = %s where serial_number = %s",
+                    (new_issued_by_whom, serial_number))
+        cur.execute("UPDATE passport_date set when_issued = %s where serial_number = %s",
+                    (new_when_issued, serial_number))
+        cur.execute("UPDATE passport_date set unit_code = %s where serial_number = %s", (new_unit_code, serial_number))
+        cur.execute("UPDATE passport_date set address_registration = %s where serial_number = %s",
+                    (new_address_registration, serial_number))
+        con.commit()
+        con.close()
+        self.close()
+
+    def not_passport(self):
+        self.close()
+
+
+class Requisites(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.ui = Ui_requisites()
+        self.ui.setupUi(self)
+        id = id_lol
+        self.ui.pushButton_4.clicked.connect(self.requisites_ok)
+        self.ui.pushButton_5.clicked.connect(self.requisites_cancel)
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT bank_account from couriers where id_courier = %s", (id,))
+        bank_account = cur.fetchone()[0]
+        cur.execute("SELECT bik from requisites where number_account = %s", (bank_account,))
+        bik = cur.fetchone()[0]
+        self.ui.lineEdit_2.setText(str(bik))
+        cur.execute("SELECT inn from requisites where number_account = %s", (bank_account,))
+        inn = cur.fetchone()[0]
+        self.ui.lineEdit_3.setText(str(inn))
+        cur.execute("SELECT kpp from requisites where number_account = %s", (bank_account,))
+        kpp = cur.fetchone()[0]
+        self.ui.lineEdit_4.setText(str(kpp))
+
+    def requisites_ok(self):
+        id = id_lol
+        con = Window1().connect_bd()
+        cur = con.cursor()
+        cur.execute("SELECT bank_account from couriers where id_courier = %s", (id,))
+        number_account = cur.fetchone()[0]
+        new_bik = self.ui.lineEdit_2.text()
+        new_inn = self.ui.lineEdit_3.text()
+        new_kpp = self.ui.lineEdit_4.text()
+        cur.execute("UPDATE requisites set bik = %s where number_account = %s", (new_bik, number_account))
+        cur.execute("UPDATE requisites set inn = %s where number_account = %s", (new_inn, number_account))
+        cur.execute("UPDATE requisites set kpp = %s where number_account = %s", (new_kpp, number_account))
+        self.close()
+
+    def requisites_cancel(self):
+        self.close()
 
 
 # Всегда нужна. Не дает окну закрыться при запуске

@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Supervisors(object):
     def setupUi(self, Supervisors):
         Supervisors.setObjectName("Supervisors")
-        Supervisors.resize(602, 473)
+        Supervisors.resize(617, 580)
         Supervisors.setStyleSheet("background: rgb(24, 24, 24)")
         self.label_2 = QtWidgets.QLabel(Supervisors)
         self.label_2.setGeometry(QtCore.QRect(30, 20, 151, 31))
@@ -29,17 +29,17 @@ class Ui_Supervisors(object):
 "    font: 75 20pt \"MS Shell Dlg 2\";}")
         self.label_2.setObjectName("label_2")
         self.comboBox = QtWidgets.QComboBox(Supervisors)
-        self.comboBox.setGeometry(QtCore.QRect(30, 120, 231, 22))
+        self.comboBox.setGeometry(QtCore.QRect(40, 120, 231, 22))
         self.comboBox.setStyleSheet("QComboBox {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.comboBox.setObjectName("comboBox")
         self.label_3 = QtWidgets.QLabel(Supervisors)
-        self.label_3.setGeometry(QtCore.QRect(40, 80, 161, 16))
+        self.label_3.setGeometry(QtCore.QRect(50, 80, 161, 16))
         self.label_3.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.label_3.setObjectName("label_3")
         self.pushButton_2 = QtWidgets.QPushButton(Supervisors)
-        self.pushButton_2.setGeometry(QtCore.QRect(40, 170, 182, 23))
+        self.pushButton_2.setGeometry(QtCore.QRect(60, 170, 182, 31))
         self.pushButton_2.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
 "     border-style: outset;\n"
 "     border-radius: 10px;\n"
@@ -51,7 +51,7 @@ class Ui_Supervisors(object):
 "QPushButton::pressed{background-color: rgb(181, 181, 0)}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Supervisors)
-        self.plainTextEdit.setGeometry(QtCore.QRect(30, 220, 231, 201))
+        self.plainTextEdit.setGeometry(QtCore.QRect(30, 220, 261, 201))
         self.plainTextEdit.setStyleSheet("QPlainTextEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.plainTextEdit.setReadOnly(True)
@@ -64,7 +64,7 @@ class Ui_Supervisors(object):
 "    font: 75 20pt \"MS Shell Dlg 2\";}")
         self.label.setObjectName("label")
         self.pushButton_3 = QtWidgets.QPushButton(Supervisors)
-        self.pushButton_3.setGeometry(QtCore.QRect(360, 380, 182, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(360, 450, 182, 31))
         self.pushButton_3.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
 "     border-style: outset;\n"
 "     border-radius: 10px;\n"
@@ -81,10 +81,10 @@ class Ui_Supervisors(object):
 "             font: bold;            }")
         self.comboBox_2.setObjectName("comboBox_2")
         self.graphicsView = QtWidgets.QGraphicsView(Supervisors)
-        self.graphicsView.setGeometry(QtCore.QRect(320, 61, 261, 401))
+        self.graphicsView.setGeometry(QtCore.QRect(320, 61, 281, 491))
         self.graphicsView.setObjectName("graphicsView")
         self.graphicsView_2 = QtWidgets.QGraphicsView(Supervisors)
-        self.graphicsView_2.setGeometry(QtCore.QRect(20, 60, 261, 401))
+        self.graphicsView_2.setGeometry(QtCore.QRect(20, 60, 281, 491))
         self.graphicsView_2.setObjectName("graphicsView_2")
         self.label_4 = QtWidgets.QLabel(Supervisors)
         self.label_4.setGeometry(QtCore.QRect(340, 80, 161, 16))
@@ -102,27 +102,27 @@ class Ui_Supervisors(object):
 "             font: bold;            }")
         self.comboBox_3.setObjectName("comboBox_3")
         self.lineEdit_2 = QtWidgets.QLineEdit(Supervisors)
-        self.lineEdit_2.setGeometry(QtCore.QRect(440, 200, 113, 20))
+        self.lineEdit_2.setGeometry(QtCore.QRect(440, 200, 131, 20))
         self.lineEdit_2.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_3 = QtWidgets.QLineEdit(Supervisors)
-        self.lineEdit_3.setGeometry(QtCore.QRect(440, 230, 113, 20))
+        self.lineEdit_3.setGeometry(QtCore.QRect(440, 230, 131, 20))
         self.lineEdit_3.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.lineEdit_4 = QtWidgets.QLineEdit(Supervisors)
-        self.lineEdit_4.setGeometry(QtCore.QRect(440, 260, 113, 20))
+        self.lineEdit_4.setGeometry(QtCore.QRect(440, 260, 131, 20))
         self.lineEdit_4.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.lineEdit_5 = QtWidgets.QLineEdit(Supervisors)
-        self.lineEdit_5.setGeometry(QtCore.QRect(440, 290, 113, 20))
+        self.lineEdit_5.setGeometry(QtCore.QRect(440, 290, 131, 20))
         self.lineEdit_5.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.lineEdit_6 = QtWidgets.QLineEdit(Supervisors)
-        self.lineEdit_6.setGeometry(QtCore.QRect(440, 320, 113, 20))
+        self.lineEdit_6.setGeometry(QtCore.QRect(440, 320, 131, 20))
         self.lineEdit_6.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
 "             font: bold;            }")
         self.lineEdit_6.setObjectName("lineEdit_6")
@@ -152,15 +152,54 @@ class Ui_Supervisors(object):
 "             font: bold;            }")
         self.label_10.setObjectName("label_10")
         self.label_11 = QtWidgets.QLabel(Supervisors)
-        self.label_11.setGeometry(QtCore.QRect(330, 420, 211, 21))
+        self.label_11.setGeometry(QtCore.QRect(330, 490, 241, 21))
         self.label_11.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
-"             font: bold;            }")
+"             font: bold;    \n"
+"            font-size: 12pt        }")
         self.label_11.setObjectName("label_11")
         self.label_12 = QtWidgets.QLabel(Supervisors)
-        self.label_12.setGeometry(QtCore.QRect(330, 440, 181, 21))
+        self.label_12.setGeometry(QtCore.QRect(330, 520, 241, 21))
         self.label_12.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
-"             font: bold;            }")
+"             font: bold;        \n"
+"font-size: 12pt    }")
         self.label_12.setObjectName("label_12")
+        self.label_13 = QtWidgets.QLabel(Supervisors)
+        self.label_13.setGeometry(QtCore.QRect(330, 350, 101, 16))
+        self.label_13.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_13.setObjectName("label_13")
+        self.lineEdit_7 = QtWidgets.QLineEdit(Supervisors)
+        self.lineEdit_7.setGeometry(QtCore.QRect(440, 350, 131, 20))
+        self.lineEdit_7.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.lineEdit_7.setObjectName("lineEdit_7")
+        self.pushButton = QtWidgets.QPushButton(Supervisors)
+        self.pushButton.setGeometry(QtCore.QRect(30, 440, 121, 23))
+        self.pushButton.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
+" font: bold}")
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_4 = QtWidgets.QPushButton(Supervisors)
+        self.pushButton_4.setGeometry(QtCore.QRect(160, 440, 131, 23))
+        self.pushButton_4.setStyleSheet("QPushButton {background-color: rgb(255, 255, 0);\n"
+" font: bold}")
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.label_14 = QtWidgets.QLabel(Supervisors)
+        self.label_14.setGeometry(QtCore.QRect(330, 380, 101, 16))
+        self.label_14.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.label_14.setObjectName("label_14")
+        self.lineEdit_8 = QtWidgets.QLineEdit(Supervisors)
+        self.lineEdit_8.setGeometry(QtCore.QRect(440, 380, 131, 20))
+        self.lineEdit_8.setStyleSheet("QLineEdit {color: rgb(85, 255, 0);\n"
+"             font: bold;            }")
+        self.lineEdit_8.setObjectName("lineEdit_8")
+        self.label_15 = QtWidgets.QLabel(Supervisors)
+        self.label_15.setGeometry(QtCore.QRect(40, 500, 241, 21))
+        self.label_15.setStyleSheet("QLabel {color: rgb(85, 255, 0);\n"
+"             font: bold;    \n"
+"            font-size: 12pt        }")
+        self.label_15.setText("")
+        self.label_15.setObjectName("label_15")
         self.graphicsView_2.raise_()
         self.graphicsView.raise_()
         self.label_2.raise_()
@@ -186,6 +225,13 @@ class Ui_Supervisors(object):
         self.label_10.raise_()
         self.label_11.raise_()
         self.label_12.raise_()
+        self.label_13.raise_()
+        self.lineEdit_7.raise_()
+        self.pushButton.raise_()
+        self.pushButton_4.raise_()
+        self.label_14.raise_()
+        self.lineEdit_8.raise_()
+        self.label_15.raise_()
 
         self.retranslateUi(Supervisors)
         QtCore.QMetaObject.connectSlotsByName(Supervisors)
@@ -207,3 +253,7 @@ class Ui_Supervisors(object):
         self.label_10.setText(_translate("Supervisors", "День рождения:"))
         self.label_11.setText(_translate("Supervisors", "После добавление курьера,"))
         self.label_12.setText(_translate("Supervisors", "нужно перезайти в систему"))
+        self.label_13.setText(_translate("Supervisors", "Паспорт:"))
+        self.pushButton.setText(_translate("Supervisors", "Изменить паспорт"))
+        self.pushButton_4.setText(_translate("Supervisors", "Изменить реквизиты"))
+        self.label_14.setText(_translate("Supervisors", "Номер счёта:"))
