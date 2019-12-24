@@ -47,7 +47,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>120</y>
+     <y>140</y>
      <width>231</width>
      <height>22</height>
     </rect>
@@ -61,7 +61,7 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>80</y>
+     <y>100</y>
      <width>161</width>
      <height>16</height>
     </rect>
@@ -78,7 +78,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>170</y>
+     <y>190</y>
      <width>182</width>
      <height>31</height>
     </rect>
@@ -102,7 +102,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>220</y>
+     <y>240</y>
      <width>261</width>
      <height>201</height>
     </rect>
@@ -140,7 +140,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>450</y>
+     <y>470</y>
      <width>182</width>
      <height>31</height>
     </rect>
@@ -164,7 +164,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>110</y>
+     <y>130</y>
      <width>231</width>
      <height>22</height>
     </rect>
@@ -178,7 +178,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>320</x>
-     <y>61</y>
+     <y>81</y>
      <width>281</width>
      <height>491</height>
     </rect>
@@ -188,7 +188,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>60</y>
+     <y>80</y>
      <width>281</width>
      <height>491</height>
     </rect>
@@ -198,7 +198,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>80</y>
+     <y>100</y>
      <width>161</width>
      <height>16</height>
     </rect>
@@ -215,7 +215,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>140</y>
+     <y>160</y>
      <width>161</width>
      <height>16</height>
     </rect>
@@ -232,7 +232,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>170</y>
+     <y>190</y>
      <width>231</width>
      <height>22</height>
     </rect>
@@ -246,7 +246,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>200</y>
+     <y>220</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -260,7 +260,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>230</y>
+     <y>250</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -274,7 +274,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>260</y>
+     <y>280</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -288,7 +288,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>290</y>
+     <y>310</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -302,7 +302,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>320</y>
+     <y>340</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -316,7 +316,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>200</y>
+     <y>220</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -333,7 +333,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>230</y>
+     <y>250</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -350,7 +350,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>260</y>
+     <y>280</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -367,7 +367,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>290</y>
+     <y>310</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -384,7 +384,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>320</y>
+     <y>340</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -401,7 +401,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>490</y>
+     <y>510</y>
      <width>241</width>
      <height>21</height>
     </rect>
@@ -419,7 +419,7 @@ QPushButton::pressed{background-color: rgb(181, 181, 0)}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>520</y>
+     <y>540</y>
      <width>241</width>
      <height>21</height>
     </rect>
@@ -437,7 +437,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>350</y>
+     <y>370</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -454,7 +454,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>350</y>
+     <y>370</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -468,7 +468,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>440</y>
+     <y>460</y>
      <width>121</width>
      <height>23</height>
     </rect>
@@ -485,7 +485,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>440</y>
+     <y>460</y>
      <width>131</width>
      <height>23</height>
     </rect>
@@ -502,7 +502,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>380</y>
+     <y>400</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -519,7 +519,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>380</y>
+     <y>400</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -533,7 +533,7 @@ font-size: 12pt	}</string>
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>500</y>
+     <y>520</y>
      <width>241</width>
      <height>21</height>
     </rect>
@@ -547,6 +547,35 @@ font-size: 12pt	}</string>
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>20</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {color: rgb(85, 255, 0);
+			 
+	font: 75 20pt &quot;MS Shell Dlg 2&quot;;}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_3">
+   <property name="geometry">
+    <rect>
+     <x>365</x>
+     <y>10</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>graphicsView_3</zorder>
   <zorder>graphicsView_2</zorder>
   <zorder>graphicsView</zorder>
   <zorder>label_2</zorder>
@@ -579,6 +608,7 @@ font-size: 12pt	}</string>
   <zorder>label_14</zorder>
   <zorder>lineEdit_8</zorder>
   <zorder>label_15</zorder>
+  <zorder>label_16</zorder>
  </widget>
  <resources/>
  <connections/>

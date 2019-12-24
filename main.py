@@ -24,6 +24,7 @@ from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
 id_lol = 0
+name_users = ""
 
 
 # Главное окно
@@ -51,6 +52,8 @@ class Window1(QMainWindow):
     def login_enter(self):
         username = self.ui.lineEdit.text()
         password = self.ui.lineEdit_2.text()
+        global name_users
+        name_users = username
         pasw = password + username
         h = hashlib.md5(pasw.encode())
         pasw = h.hexdigest() + "deliveryfood"
@@ -219,6 +222,7 @@ class Window_clients(QMainWindow):
         self.ui.plainTextEdit_2.setPlaceholderText("Введите ваш комментарий...")
         self.ui.tableWidget.clicked.connect(self.click_table)
         self.ui.pushButton_3.clicked.connect(self.clear_dishes)
+        self.ui.label_16.setText("Привет, " + str(name_users) + "!")
         rest = self.ui.comboBox
         type_payments = self.ui.comboBox_2
         con = Window1().connect_bd()
@@ -270,7 +274,7 @@ class Window_clients(QMainWindow):
     def zakazat(self):
         now = datetime.now()
         ordered_in = now.strftime("%H:%M:%S")
-        after = now + timedelta(minutes=2)
+        after = now + timedelta(minutes=45)
         deliver_in = after.strftime("%H:%M:%S")
         con = Window1().connect_bd()
         cur = con.cursor()
@@ -480,6 +484,7 @@ class Window_supervisors(QMainWindow):
         self.ui.pushButton_4.clicked.connect(self.show_requisites)
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_4.setEnabled(False)
+        self.ui.label_16.setText(str(name_users))
         couriers = self.ui.comboBox
         service = self.ui.comboBox_2
         type = self.ui.comboBox_3
