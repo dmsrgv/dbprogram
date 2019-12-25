@@ -266,7 +266,7 @@ class Window_clients(QMainWindow):
                     (id_restik, value))
         prize = cur.fetchone()[0]
         # sum_prize = sum_prize + prize
-        prize = prize.replace(" ?", "")
+        prize = prize.replace(" ₽", "")
         prize = prize.replace(",", ".")
         self.sum_prize += float(prize)
         return self.sum_prize
@@ -378,7 +378,7 @@ class Window_clients(QMainWindow):
         col = index + 1
         try:
             cur.execute(
-                "SELECT name_dish,prize_dish FROM (SELECT * FROM show_dishes()) AS dishes WHERE id_restaurant =" + str(
+                "SELECT name_dish,prize_dish from dishes WHERE id_restaurant =" + str(
                     col) + "")
             result = cur.fetchall()
             self.ui.tableWidget.setRowCount(0)
